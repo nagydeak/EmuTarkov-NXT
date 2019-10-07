@@ -18,8 +18,7 @@ namespace EmuTarkovNXT.Shared
 
 		public static void Create()
 		{
-			string datetime = DateTime.Now.ToUniversalTime().ToString("U");
-			datetime.Replace(" ", "_").Replace(":", "-").Replace("T", "").Replace("Z", "");
+			string datetime = DateTime.Now.ToUniversalTime().ToString("MM-dd-yyyy_HH-mm-ss");
 			filepath = FileExt.CombinePath(Environment.CurrentDirectory, "/Logs/" + datetime);
 			FileExt.CreateFile(filepath);
 		}
@@ -50,7 +49,7 @@ namespace EmuTarkovNXT.Shared
 
 			if (!string.IsNullOrEmpty(filepath))
 			{
-				FileExt.WriteLine(filepath, text + Environment.NewLine);
+				FileExt.WriteLine(filepath, text);
 			}
 		}
 	}
