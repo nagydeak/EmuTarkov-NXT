@@ -36,17 +36,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\RequestHandler.cs" />
-    <Compile Include="Code\ResponseFactory.cs" />
-    <Compile Include="Code\ResponseHandler.cs" />
+    <Compile Include="Code\Controllers\Server\AccountHandler.cs" />
+    <Compile Include="Code\Controllers\Server\RequestHandler.cs" />
+    <Compile Include="Code\Controllers\Server\ResponseFactory.cs" />
+    <Compile Include="Code\Controllers\Server\ResponseHandler.cs" />
+    <Compile Include="Code\Models\EFT\Packet.cs" />
+    <Compile Include="Code\Models\Server\Account.cs" />
     <Compile Include="Code\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,5 +54,6 @@
       <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

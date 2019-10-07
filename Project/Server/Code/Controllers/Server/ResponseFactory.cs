@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using EmuTarkovNXT.Shared;
+using EmuTarkovNXT.Server.Models;
 
 namespace EmuTarkovNXT.Server
 {
@@ -32,7 +34,7 @@ namespace EmuTarkovNXT.Server
 				return responses[url](body);
 			}
 
-			return null;
+			return Json.Serialize(new Packet<object>(0, "", null));
 		}
 
 		private static void AddResponse(string url, Func<string, string> worker)
@@ -42,7 +44,9 @@ namespace EmuTarkovNXT.Server
 
 		private static void SetupResponses()
 		{
-			// Add the responses here!
+			responses.Add("/launcher/account/create", AccountHandler.CreateAccount);
+			responses.Add("/launcher/account/delete", AccountHandler.DeleteAccount);
+			responses.Add("/launcher/account/login", AccountHandler.LoginAccount);
 		}
 	}
 }

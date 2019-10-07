@@ -10,8 +10,6 @@ namespace EmuTarkovNXT.Shared
 {
 	public static class Zlib
 	{
-		private static object threadLock;
-
 		public static byte[] Decompress(byte[] buffer)
 		{
 			return ZlibStream.CompressBuffer(buffer);

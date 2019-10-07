@@ -8,7 +8,7 @@ using System.IO;
 
 namespace EmuTarkovNXT.Shared
 {
-	public static class File
+	public static class FileExt
 	{
 		private static object threadLock;
 
@@ -17,7 +17,7 @@ namespace EmuTarkovNXT.Shared
 			return Path.Combine(path1, path2);
 		}
 
-		public static void Create(string filepath)
+		public static void CreateFile(string filepath)
 		{
 			lock (threadLock)
 			{

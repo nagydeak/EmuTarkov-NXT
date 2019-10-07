@@ -26,7 +26,7 @@ namespace EmuTarkovNXT.Server
 
 		public void SendResponse()
 		{
-			string data = GetResponse();
+			string data = ResponseFactory.GetResponse(url, body);
 			byte[] buffer = null;
 
 			switch (data)
@@ -40,25 +40,12 @@ namespace EmuTarkovNXT.Server
 					break;
 			}
 
-			response.AddHeader("Set-Cookie", "PHPSESSID=JustEmuTarkovNXT");
+			response.AddHeader("Set-Cookie", "PHPSESSID=EmuTarkovNXT");
 			response.ContentLength64 = buffer.Length;
 
 			MemoryStream ms = new MemoryStream(buffer);
 			ms.CopyTo(response.OutputStream);
 			ms.Close();
-		}
-
-		private string GetResponse()
-		{
-			string response = ResponseFactory.GetResponse(url, body);
-
-			// invalid response
-			if (response == null)
-			{
-				return null;
-			}
-
-			return response;
 		}
 
 		private byte[] SendImageResponse(string url)
