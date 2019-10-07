@@ -1,4 +1,9 @@
-﻿namespace EmuTarkovNXT.Server.Models
+﻿/* Packet.cs
+ * authors: Merijn Hendriks
+ * license: MIT License
+ */
+
+namespace EmuTarkovNXT.Server.Models
 {
 	public class Packet<T>
 	{

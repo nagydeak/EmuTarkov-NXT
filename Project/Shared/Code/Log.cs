@@ -1,5 +1,5 @@
-﻿/* File.cs
- * authors: Merijn Hendriks, Kenny
+﻿/* Log.cs
+ * authors: Merijn Hendriks, Kenny, TheMaoci
  * license: MIT License
  */
 
@@ -19,42 +19,29 @@ namespace EmuTarkovNXT.Shared
 		public static void Create()
 		{
 			string datetime = DateTime.Now.ToUniversalTime().ToString("U");
-
-			datetime.Replace(" ", "_");
-			datetime.Replace(":", "-");
-			datetime.Replace("T", "");
-			datetime.Replace("Z", "");
-
+			datetime.Replace(" ", "_").Replace(":", "-").Replace("T", "").Replace("Z", "");
 			filepath = FileExt.CombinePath(Environment.CurrentDirectory, "/Logs/" + datetime);
 			FileExt.CreateFile(filepath);
 		}
 
 		public static void Info(string text)
 		{
-			string message = "[INFO]: " + text + Environment.NewLine;
-
-			ProcessMessage(message);
+			ProcessMessage("[INFO]: " + text);
 		}
 
 		public static void Warning(string text)
 		{
-			string message = "[WARNING]: " + text + Environment.NewLine;
-
-			ProcessMessage(message);
+			ProcessMessage("[WARNING]: " + text);
 		}
 
 		public static void Error(string text)
 		{
-			string message = "[ERROR]: " + text + Environment.NewLine;
-
-			ProcessMessage(message);
+			ProcessMessage("[ERROR]: " + text);
 		}
 
 		public static void Data(string text)
 		{
-			string message = text + Environment.NewLine;
-
-			ProcessMessage(message);
+			ProcessMessage(text);
 		}
 
 		private static void ProcessMessage(string text)
@@ -63,7 +50,7 @@ namespace EmuTarkovNXT.Shared
 
 			if (!string.IsNullOrEmpty(filepath))
 			{
-				FileExt.WriteLine(filepath, text);
+				FileExt.WriteLine(filepath, text + Environment.NewLine);
 			}
 		}
 	}

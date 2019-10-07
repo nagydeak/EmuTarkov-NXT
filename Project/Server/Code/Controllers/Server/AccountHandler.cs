@@ -26,9 +26,10 @@ namespace EmuTarkovNXT.Server
 
 		private static void LoadAccounts()
 		{
+			string json = FileExt.Read(FileExt.CombinePath(Environment.CurrentDirectory, "/data/accounts.json"));
+
 			lock (threadLock)
 			{
-				string json = FileExt.Read(FileExt.CombinePath(Environment.CurrentDirectory, "/data/accounts.json"));
 				accounts.Clear();
 				accounts.AddRange(Json.Deserialize<Account[]>(json));
 			}
@@ -50,34 +51,34 @@ namespace EmuTarkovNXT.Server
 			return new Regex(passwordRegex).IsMatch(password);
 		}
 
-		public static Account GetAccount(Account requestBody)
+		public static int GetAccount(Account requestBody)
 		{
 			if (!ValidEmail(requestBody.email) || !ValidPassword(requestBody.email))
 			{
-				return null;
+				return -1;
 			}
 
-			foreach (Account account in accounts)
+			for (int i = 0; i < accounts.Count; ++i)
 			{
-				if (account.email == requestBody.email && account.password == requestBody.password)
+				if (accounts[i].email == requestBody.email && accounts[i].password == requestBody.password)
 				{
-					return account;
+					return i;
 				}
 			}
 
-			return null;
+			return 0;
 		}
 
 		public static string CreateAccount(string body)
 		{
 			Account requestBody = Json.Deserialize<Account>(body);
-			Account account = GetAccount(requestBody);
+			int accountId = GetAccount(requestBody);
 
-			if (account == null)
+			if (accountId == 0)
 			{
 				lock (threadLock)
 				{
-					account = new Account(requestBody.email, requestBody.password);
+					Account account = new Account(requestBody.email, requestBody.password);
 					accounts.Add(account);
 					SaveAccounts();
 				}
@@ -91,16 +92,16 @@ namespace EmuTarkovNXT.Server
 		public static string DeleteAccount(string body)
 		{
 			Account requestBody = Json.Deserialize<Account>(body);
-			Account account = GetAccount(requestBody);
+			int accountId = GetAccount(requestBody);
 
-			if (account == null)
+			if (accountId <= 0)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
 
 			lock (threadLock)
 			{
-				accounts.Remove(account);
+				accounts.Remove(accounts[accountId]);
 				SaveAccounts();
 				return Json.Serialize(new Packet<string>(0, "", "success"));
 			}
@@ -109,9 +110,9 @@ namespace EmuTarkovNXT.Server
 		public static string LoginAccount(string body)
 		{
 			Account requestBody = Json.Deserialize<Account>(body);
-			Account account = GetAccount(requestBody);
+			int accountId = GetAccount(requestBody);
 
-			if (account == null)
+			if (accountId <= 0)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}

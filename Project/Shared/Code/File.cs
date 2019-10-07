@@ -37,10 +37,10 @@ namespace EmuTarkovNXT.Shared
 		{
 			lock (threadLock)
 			{
-				StreamReader reader = new StreamReader(filepath);
-				string text = reader.ReadToEnd();
+				StreamReader sr = new StreamReader(filepath);
+				string text = sr.ReadToEnd();
 
-				reader.Close();
+				sr.Close();
 				return text;
 			}
 		}
@@ -49,11 +49,11 @@ namespace EmuTarkovNXT.Shared
 		{
 			lock (threadLock)
 			{
-				StreamWriter writer = new StreamWriter(filepath);
+				StreamWriter sw = new StreamWriter(filepath);
 
-				writer.Write(text);
-				writer.Flush();
-				writer.Close();
+				sw.Write(text);
+				sw.Flush();
+				sw.Close();
 			}
 		}
 
@@ -61,11 +61,11 @@ namespace EmuTarkovNXT.Shared
 		{
 			lock (threadLock)
 			{
-				StreamWriter writer = new StreamWriter(filepath, true);
+				StreamWriter sw = new StreamWriter(filepath, true);
 
-				writer.WriteLine(text);
-				writer.Flush();
-				writer.Close();
+				sw.WriteLine(text);
+				sw.Flush();
+				sw.Close();
 			}
 		}
 	}

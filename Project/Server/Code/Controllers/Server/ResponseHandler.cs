@@ -26,17 +26,22 @@ namespace EmuTarkovNXT.Server
 
 		public void SendResponse()
 		{
+			if (response == null)
+			{
+				return;
+			}
+
 			string data = ResponseFactory.GetResponse(url, body);
 			byte[] buffer = null;
 
 			switch (data)
 			{
 				case "IMAGE":
-					buffer = SendImageResponse(url);
+					buffer = SendImage(url);
 					break;
 
 				default:
-					buffer = SendJsonResponse(data);
+					buffer = SendJson(data);
 					break;
 			}
 
@@ -48,32 +53,35 @@ namespace EmuTarkovNXT.Server
 			ms.Close();
 		}
 
-		private byte[] SendImageResponse(string url)
+		private byte[] SendImage(string url)
 		{
 			string filepath = Path.Combine(Environment.CurrentDirectory, url);
 			byte[] buffer = null;
 
-			// get file size
+			// file size
 			FileInfo fileInfo = new FileInfo(filepath);
 			long bytesCount = fileInfo.Length;
 
-			// get file data
+			// file data
 			FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
 			BinaryReader br = new BinaryReader(fs);
 			buffer = br.ReadBytes((int)bytesCount);
 			br.Close();
 			fs.Close();
 
+			// assumes response isn't null
 			response.AddHeader("Content-Type", "image/png");
 			response.AddHeader("Content-Encoding", "identity");
 
 			return buffer;
 		}
 
-		private byte[] SendJsonResponse(string json)
+		private byte[] SendJson(string json)
 		{
+			// assumes response isn't null
 			response.AddHeader("Content-Type", "text/plain");
 			response.AddHeader("Content-Encoding", "deflate");
+
 			byte[] buffer = Encoding.UTF8.GetBytes(json);
 			return Zlib.Compress(buffer);
 		}

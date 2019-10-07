@@ -1,5 +1,5 @@
 ﻿/* RequestHandler.cs
- * authors: Merijn Hendriks
+ * authors: Merijn Hendriks, TheMaoci
  * license: MIT License
  */
 
@@ -15,15 +15,16 @@ namespace EmuTarkovNXT.Server
 		{
 			string url = "/";
 
-			for (int i = 0; i < segments.Length; ++i)
+			// skips address
+			for (int i = 1; i < segments.Length; ++i)
 			{
-				// skip address
-				if (i == 0)
-				{
-					continue;
-				}
-
 				url += segments[i];
+			}
+
+			if (url.Contains("?"))
+			{
+				string[] tmp = url.Split('?');
+				url = tmp[0];				
 			}
 
 			return url;

@@ -39,7 +39,10 @@ namespace EmuTarkovNXT.Server
 
 		private static void AddResponse(string url, Func<string, string> worker)
 		{
-			responses.Add(url, worker);
+			if (!string.IsNullOrEmpty(url) && worker != null)
+			{
+				responses.Add(url, worker);
+			}
 		}
 
 		private static void SetupResponses()
