@@ -1,0 +1,25 @@
+﻿/* Zlib.cs
+ * authors: Merijn Hendriks
+ * license: MIT License
+ */
+
+using System.IO;
+using Ionic.Zlib;
+
+namespace EmuTarkovNXT.Shared
+{
+	public static class Zlib
+	{
+		private static object threadLock;
+
+		public static byte[] Decompress(byte[] buffer)
+		{
+			return ZlibStream.CompressBuffer(buffer);
+		}
+
+		public static byte[] Compress(byte[] buffer)
+		{
+			return ZlibStream.UncompressBuffer(buffer);
+		}
+	}
+}
