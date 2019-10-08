@@ -12,12 +12,12 @@ namespace EmuTarkovNXT.Shared
 	{
 		public static byte[] Decompress(byte[] buffer)
 		{
-			return ZlibStream.CompressBuffer(buffer);
+			return ZlibStream.UncompressBuffer(buffer);
 		}
 
 		public static byte[] Compress(byte[] buffer)
 		{
-			return ZlibStream.UncompressBuffer(buffer);
+			return ZlibStream.CompressBuffer(buffer);
 		}
 	}
 }

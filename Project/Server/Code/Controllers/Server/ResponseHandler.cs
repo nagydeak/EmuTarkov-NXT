@@ -13,35 +13,24 @@ namespace EmuTarkovNXT.Server
 {
 	public class ResponseHandler
 	{
-		public HttpListenerResponse response { private get; set; }
-		public string url { private get; set; }
-		public string body { private get; set; }
-
-		public ResponseHandler()
+		public void SendResponse(HttpListenerResponse response, RequestHandler requestHandler)
 		{
-			response = null;
-			url = "http://localhost/";
-			body = null;
-		}
-
-		public void SendResponse()
-		{
-			if (response == null)
+			if (response == null || requestHandler == null)
 			{
 				return;
 			}
 
-			string data = ResponseFactory.GetResponse(url, body);
+			string data = ResponseFactory.GetResponse(requestHandler.url, requestHandler.body);
 			byte[] buffer = null;
 
 			switch (data)
 			{
 				case "IMAGE":
-					buffer = SendImage(url);
+					buffer = SendImage(response, requestHandler.url);
 					break;
 
 				default:
-					buffer = SendJson(data);
+					buffer = SendJson(response, data);
 					break;
 			}
 
@@ -53,8 +42,13 @@ namespace EmuTarkovNXT.Server
 			ms.Close();
 		}
 
-		private byte[] SendImage(string url)
+		private byte[] SendImage(HttpListenerResponse response, string url)
 		{
+			if (response == null || string.IsNullOrEmpty(url))
+			{
+				return null;
+			}
+
 			string filepath = Path.Combine(Environment.CurrentDirectory, url);
 			byte[] buffer = null;
 
@@ -68,17 +62,20 @@ namespace EmuTarkovNXT.Server
 			buffer = br.ReadBytes((int)bytesCount);
 			br.Close();
 			fs.Close();
-
-			// assumes response isn't null
+			
 			response.AddHeader("Content-Type", "image/png");
 			response.AddHeader("Content-Encoding", "identity");
-
 			return buffer;
 		}
 
-		private byte[] SendJson(string json)
+		private byte[] SendJson(HttpListenerResponse response, string json)
 		{
-			// assumes response isn't null
+			if (response == null)
+			{
+				return null;
+			}
+
+			Log.Data("SEND:" + Environment.NewLine + json);
 			response.AddHeader("Content-Type", "text/plain");
 			response.AddHeader("Content-Encoding", "deflate");
 

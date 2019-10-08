@@ -26,10 +26,14 @@ namespace EmuTarkovNXT.Shared
 
 		static Log()
 		{
+            logLevel = LogLevel.None;
+		}
+
+		public static void Create(string path)
+		{
 			string datetime = DateTime.Now.ToUniversalTime().ToString("MM-dd-yyyy_HH-mm-ss", CultureInfo.InvariantCulture);
-			filepath = FileExt.CombinePath(Environment.CurrentDirectory, "/Logs/" + datetime);
-			FileExt.CreateFile(filepath);
-			logLevel = LogLevel.All;
+			filepath = FileExt.CombinePath(path, "./Appdata/Logs/");
+			FileExt.CreateFile(filepath, datetime + ".log");
 		}
 
 		public static void Debug(string text)

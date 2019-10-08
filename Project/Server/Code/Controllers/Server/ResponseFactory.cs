@@ -14,42 +14,48 @@ namespace EmuTarkovNXT.Server
 	{
 		private static Dictionary<string, Func<string, string>> responses;
 
-		static ResponseFactory()
+		static  ResponseFactory()
 		{
 			responses = new Dictionary<string, Func<string, string>>();
-			SetupResponses();
+		}
+
+		public static void AddResponse(string url, Func<string, string> worker)
+		{
+			if (string.IsNullOrEmpty(url))
+			{
+				Log.Error("Response URL cannot be null");
+			}
+
+			if (worker == null)
+			{
+				Log.Error("Response worker cannot be null");
+			}
+
+			if (responses.ContainsKey(url))
+			{
+				Log.Error("Response URL already exists");
+			}
+
+			responses.Add(url, worker);
 		}
 
 		public static string GetResponse(string url, string body)
 		{
+			string response = Json.Serialize(new Packet<object>(0, "", null));
+
 			// handle special cases
 			if (url.Contains("CONTENT"))
 			{
-				return "IMAGE";
+				response = "IMAGE";
 			}
 
 			// handle general cases
 			if (responses.ContainsKey(url))
 			{
-				return responses[url](body);
+				response = responses[url](body);
 			}
 
-			return Json.Serialize(new Packet<object>(0, "", null));
-		}
-
-		private static void AddResponse(string url, Func<string, string> worker)
-		{
-			if (!string.IsNullOrEmpty(url) && worker != null)
-			{
-				responses.Add(url, worker);
-			}
-		}
-
-		private static void SetupResponses()
-		{
-			responses.Add("/launcher/account/create", AccountHandler.CreateAccount);
-			responses.Add("/launcher/account/delete", AccountHandler.DeleteAccount);
-			responses.Add("/launcher/account/login", AccountHandler.LoginAccount);
+			return response;
 		}
 	}
 }

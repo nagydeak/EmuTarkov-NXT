@@ -53,6 +53,13 @@
       <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Appdata\accounts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
