@@ -20,9 +20,9 @@ namespace EmuTarkovNXT.Server
 		public Server(string filepath, string address)
 		{
 			listener = new HttpListener();
-			accountHandler = new AccountHandler(filepath);
 			requestHandler = new RequestHandler();
 			responseHandler = new ResponseHandler();
+			accountHandler = new AccountHandler(filepath, requestHandler);
 
 			// address cannot be empty
 			if (string.IsNullOrEmpty(address))
@@ -82,6 +82,7 @@ namespace EmuTarkovNXT.Server
 			HttpListenerContext context = listener.GetContext();
 
 			requestHandler.SetIp(context.Request);
+			requestHandler.SetSid(context.Request);
 			requestHandler.SetUrl(context.Request);
 			requestHandler.SetBody(context.Request);
 			requestHandler.ShowRequestInfo();

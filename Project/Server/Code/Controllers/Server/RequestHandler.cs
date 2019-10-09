@@ -14,12 +14,14 @@ namespace EmuTarkovNXT.Server
 	public class RequestHandler
 	{
 		public string ip { get; private set; }
+		public string sid { get; private set; }
 		public string url { get; private set; }
 		public string body { get; private set; }
 
 		public RequestHandler()
 		{
 			ip = "127.0.0.1";
+			sid = string.Empty;
 			url = "http://localhost/";
 			body = null;
 		}
@@ -32,6 +34,29 @@ namespace EmuTarkovNXT.Server
 			}
 
 			ip = request.LocalEndPoint.ToString();
+		}
+
+		public void SetSid(HttpListenerRequest request)
+		{
+			foreach (var key in request.Headers.AllKeys)
+			{
+				if (key.ToLower() == "cookie")
+				{
+					foreach (var value in request.Headers.GetValues(key))
+					{
+						if (value.StartsWith("PHPSESSID"))
+						{
+							sid = value.Split('=')[1];
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		public void SetSid(string accountId)
+		{
+			sid = accountId;
 		}
 
 		public void SetUrl(HttpListenerRequest request)
@@ -80,6 +105,7 @@ namespace EmuTarkovNXT.Server
 		public void ShowRequestInfo()
 		{
 			Log.Info("IP: " + ip);
+			Log.Info("SID: " + sid);
 			Log.Info("URL: " + url);
 			Log.Data("RECV:" + Environment.NewLine + body);
 		}

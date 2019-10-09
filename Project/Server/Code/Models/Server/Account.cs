@@ -7,13 +7,15 @@ namespace EmuTarkovNXT.Server.Models
 {
 	public class Account
 	{
-		public string email;
-		public string password;
+		public string email { get; private set; }
+		public string password { get; private set; }
+		public string id { get; private set; }
 
-		public Account(string email, string password)
+		public Account(string email, string password, string id)
 		{
 			this.email = email;
 			this.password = password;
+			this.id = id;
 		}
 	}
 }

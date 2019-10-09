@@ -34,7 +34,7 @@ namespace EmuTarkovNXT.Server
 					break;
 			}
 
-			response.AddHeader("Set-Cookie", "PHPSESSID=EmuTarkovNXT");
+			response.AddHeader("Set-Cookie", "PHPSESSID=" + requestHandler.sid);
 			response.ContentLength64 = buffer.Length;
 
 			MemoryStream ms = new MemoryStream(buffer);

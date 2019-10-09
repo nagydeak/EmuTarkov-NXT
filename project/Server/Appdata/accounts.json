@@ -1,6 +1,7 @@
 ﻿[
 	{
 		"email": "user@emutarkov.com",
-		"passowrd": "EmuTarkov123"
+		"password": "EmuTarkov123!",
+		"id": "0x00000000"
 	}
 ]

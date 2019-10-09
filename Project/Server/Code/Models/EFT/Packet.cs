@@ -7,9 +7,9 @@ namespace EmuTarkovNXT.Server.Models
 {
 	public class Packet<T>
 	{
-		int err;
-		string errcode;
-		T data;
+        public int err { get; set; }
+        public string errcode { get; set; }
+        public T data { get; set; }
 
 		public Packet(int err, string errcode, T data)
 		{
