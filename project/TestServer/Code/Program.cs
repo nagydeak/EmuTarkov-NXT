@@ -4,16 +4,17 @@ using EmuTarkovNXT.Server;
 
 namespace TestServer
 {
-	public class Program
+	public static class Program
 	{
-		private static readonly string filepath = AppDomain.CurrentDomain.BaseDirectory;
-
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			Log.Create(filepath);
-			Log.Info("Filepath: " + filepath);
+			ServerConstants.SetFilepath(AppDomain.CurrentDomain.BaseDirectory);
 
-			Server server = new Server(filepath, "http://localhost:8888/");
+			Log.Create(ServerConstants.filepath);
+			Log.Data(ServerConstants.version);
+			Log.Info("Filepath: " + ServerConstants.filepath);
+
+			Server server = new Server("http://localhost:8888/");
 			server.Start();
 
 			while (true)

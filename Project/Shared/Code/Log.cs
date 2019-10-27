@@ -11,11 +11,11 @@ namespace EmuTarkovNXT.Shared
 	public enum LogLevel
 	{
 		None = 0,
-		Debug = 1,
-		Info = 2,
-		Warning = 4,
-		Error = 8,
-		Data = 16,
+		Info = 1,
+		Warning = 2,
+		Error = 4,
+		Data = 8,
+		Debug = 16,
 		All = 31
 	}
 
@@ -32,8 +32,8 @@ namespace EmuTarkovNXT.Shared
 		public static void Create(string path)
 		{
 			string datetime = DateTime.Now.ToUniversalTime().ToString("MM-dd-yyyy_HH-mm-ss", CultureInfo.InvariantCulture);
-			filepath = FileExt.CombinePath(path, "./Appdata/Logs/");
-			FileExt.CreateFile(filepath, datetime + ".log");
+			filepath = FileExt.CombinePath(path, "./Appdata/Logs/" + datetime + ".log");
+			FileExt.CreateFile(filepath);
 		}
 
 		public static void Debug(string text)

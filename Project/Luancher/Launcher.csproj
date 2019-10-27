@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B1D686C-4F8B-44D6-88C5-D277084A32FE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Server</RootNamespace>
-    <AssemblyName>Server</AssemblyName>
+    <ProjectGuid>{73B4496F-4B61-445D-A81D-ABFDA9241369}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Luancher</RootNamespace>
+    <AssemblyName>Luancher</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,38 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Code\Controllers\AccountHandler.cs" />
-    <Compile Include="Code\Controllers\RequestHandler.cs" />
-    <Compile Include="Code\Controllers\ResponseFactory.cs" />
-    <Compile Include="Code\Controllers\ResponseHandler.cs" />
-    <Compile Include="Code\Server.cs" />
-    <Compile Include="Code\ServerConstants.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{be05a826-801e-4a7d-9a71-a8492e620fc4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Shared\Shared.csproj">
-      <Project>{490832ce-4149-4ae3-9c5a-bf8edc6309e3}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Appdata\accounts.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

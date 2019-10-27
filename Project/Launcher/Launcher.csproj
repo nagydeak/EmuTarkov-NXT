@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B1D686C-4F8B-44D6-88C5-D277084A32FE}</ProjectGuid>
+    <ProjectGuid>{0FC15528-5634-48A6-B75B-0CE1FCD59BCD}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Server</RootNamespace>
-    <AssemblyName>Server</AssemblyName>
+    <RootNamespace>Launcher</RootNamespace>
+    <AssemblyName>Launcher</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -35,16 +35,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Controllers\AccountHandler.cs" />
-    <Compile Include="Code\Controllers\RequestHandler.cs" />
-    <Compile Include="Code\Controllers\ResponseFactory.cs" />
-    <Compile Include="Code\Controllers\ResponseHandler.cs" />
-    <Compile Include="Code\Server.cs" />
-    <Compile Include="Code\ServerConstants.cs" />
+    <Folder Include="Appdata\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj">
@@ -57,12 +52,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Appdata\accounts.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Compile Include="Code\AccountRequest.cs" />
+    <Compile Include="Code\LauncherConstants.cs" />
+    <Compile Include="Code\RequestHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

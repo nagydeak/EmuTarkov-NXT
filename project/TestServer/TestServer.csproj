@@ -52,5 +52,8 @@
       <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Appdata\server.config.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

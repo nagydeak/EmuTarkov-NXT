@@ -3,7 +3,7 @@
  * license: MIT License
  */
 
-namespace EmuTarkovNXT.Server.Models
+namespace EmuTarkovNXT.Models.EFT
 {
 	public class Packet<T>
 	{

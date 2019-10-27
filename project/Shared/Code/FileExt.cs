@@ -22,19 +22,14 @@ namespace EmuTarkovNXT.Shared
 			return Path.Combine(path1, path2);
 		}
 
-		public static void CreateFile(string filepath, string filename)
+		public static void CreateFile(string filepath)
 		{
 			lock (threadLock)
 			{
-				if (!Directory.Exists(filepath))
+				if (!File.Exists(filepath))
 				{
-					Directory.CreateDirectory(filepath);
-                }
-
-				if (!System.IO.File.Exists(CombinePath(filepath, filename)))
-				{
-                    File.Create(CombinePath(filepath, filename));
-                }
+					File.Create(filepath);
+				}
 			}
 		}
 

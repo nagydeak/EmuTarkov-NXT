@@ -17,12 +17,12 @@ namespace EmuTarkovNXT.Server
 		private HttpListener listener;
 		private readonly string prefix;
 
-		public Server(string filepath, string address)
+		public Server(string address)
 		{
 			listener = new HttpListener();
 			requestHandler = new RequestHandler();
 			responseHandler = new ResponseHandler();
-			accountHandler = new AccountHandler(filepath, requestHandler);
+			accountHandler = new AccountHandler(requestHandler);
 
 			// address cannot be empty
 			if (string.IsNullOrEmpty(address))
@@ -92,7 +92,7 @@ namespace EmuTarkovNXT.Server
 
 		private string GetVersion(string body)
 		{
-			return @"EmuTarkov-NXT | v0.0.1a";
+			return ServerConstants.version;
 		}
 
 		private void SetupResponses()

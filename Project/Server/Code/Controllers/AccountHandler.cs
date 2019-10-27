@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using EmuTarkovNXT.Shared;
-using EmuTarkovNXT.Server.Models;
+using EmuTarkovNXT.Models.EFT;
+using EmuTarkovNXT.Models.Server;
 
 namespace EmuTarkovNXT.Server
 {
@@ -21,10 +22,10 @@ namespace EmuTarkovNXT.Server
 		private static List<Account> accounts;
 		private static object threadLock;
 
-		public AccountHandler(string path, RequestHandler requestInfo)
+		public AccountHandler(RequestHandler requestInfo)
 		{
 			request = requestInfo;
-			filepath = FileExt.CombinePath(path, "./Appdata/accounts.json");
+			filepath = FileExt.CombinePath(ServerConstants.filepath, "./Appdata/accounts.json");
 			accounts = new List<Account>();
 			threadLock = new object();
 			LoadAccounts();
@@ -39,6 +40,9 @@ namespace EmuTarkovNXT.Server
 				accounts.Clear();
 				accounts.AddRange(Json.Deserialize<Account[]>(json));
 			}
+
+			Log.Debug("Loaded accounts");
+			Log.Debug(Json.Serialize<Account[]>(accounts.ToArray()));
 		}
 
 		private void SaveAccounts()
@@ -61,18 +65,20 @@ namespace EmuTarkovNXT.Server
 		{
 			if (requestBody == null || !ValidEmail(requestBody.email) || !ValidPassword(requestBody.password))
 			{
-				return -1;
+				// input invalid
+				return -2;
 			}
 
 			for (int i = 0; i < accounts.Count; ++i)
 			{
-				if (accounts[i].email == requestBody.email && accounts[i].password == requestBody.password && accounts[i].id == request.sid)
+				if (accounts[i].email == requestBody.email && accounts[i].password == requestBody.password)
 				{
 					return i;
 				}
 			}
 
-			return 0;
+			// account not found
+			return -1;
 		}
 
 		public string CreateAccount(string body)
@@ -85,12 +91,14 @@ namespace EmuTarkovNXT.Server
 			Account requestBody = Json.Deserialize<Account>(body);
 			int accountId = GetAccount(requestBody);
 
-			if (accountId == 0)
+			if (accountId == -1)
 			{
 				lock (threadLock)
 				{
-					/// ----- TODO: ADD ACCOUNT ID GENERATION ----- ///
-					Account account = new Account(requestBody.email, requestBody.password, requestBody.id);
+					// todo: generate EFT AID instead
+					string id = accounts.Count.ToString();
+
+					Account account = new Account(requestBody.email, requestBody.password, id);
 					accounts.Add(account);
 					SaveAccounts();
 				}
@@ -110,7 +118,7 @@ namespace EmuTarkovNXT.Server
 
 			int accountId = GetAccount(Json.Deserialize<Account>(body));
 
-			if (accountId <= 0)
+			if (accountId < 0)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
@@ -125,10 +133,6 @@ namespace EmuTarkovNXT.Server
 
 		public string LoginAccount(string body)
 		{
-			/// ----- TESTING CODE ----- ///
-			body = "{\"email\": \"user@emutarkov.com\", \"password\": \"EmuTarkov123!\", \"id\": \"0x00000000\"}";
-			request.SetSid("0x00000000");
-
 			if (body == null)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
@@ -136,7 +140,7 @@ namespace EmuTarkovNXT.Server
 
 			int accountId = GetAccount(Json.Deserialize<Account>(body));
 
-            if (accountId <= 0)
+            if (accountId < 0)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
