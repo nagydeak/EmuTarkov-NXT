@@ -16,19 +16,20 @@ namespace EmuTarkovNXT.Server
 {
 	public class AccountHandler
 	{
-		private const string emailRegex = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
-		private const string passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,16}$";
+		private const string EMAIL_REGEX = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+		private const string PASSWORD_REGEX = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,16}$";
+		private const int ERROR_ACCOUNT_UNKNOWN = -1;
+		private const int ERROR_INVALID_INPUT = -2;
+
 		private RequestHandler request;
 		private string filepath;
 		private static List<Account> accounts;
-		private static object threadLock;
 
 		public AccountHandler(RequestHandler requestInfo)
 		{
 			request = requestInfo;
 			filepath = FileExt.CombinePath(Constants.filepath, "./Appdata/accounts.json");
 			accounts = new List<Account>();
-			threadLock = new object();
 			LoadAccounts();
 		}
 
@@ -36,11 +37,8 @@ namespace EmuTarkovNXT.Server
 		{
 			string json = FileExt.Read(filepath);
 
-			lock (threadLock)
-			{
-				accounts.Clear();
-				accounts.AddRange(Json.Deserialize<Account[]>(json));
-			}
+			accounts.Clear();
+			accounts.AddRange(Json.Deserialize<Account[]>(json));
 
 			Log.Debug("Loaded accounts");
 			Log.Debug(Json.Serialize<Account[]>(accounts.ToArray()));
@@ -54,12 +52,12 @@ namespace EmuTarkovNXT.Server
 
 		private bool ValidEmail(string email)
 		{
-			return new Regex(emailRegex, RegexOptions.IgnoreCase).IsMatch(email);
+			return new Regex(EMAIL_REGEX, RegexOptions.IgnoreCase).IsMatch(email);
 		}
 
 		private bool ValidPassword(string password)
 		{
-			return new Regex(passwordRegex).IsMatch(password);
+			return new Regex(PASSWORD_REGEX).IsMatch(password);
 		}
 
 		public int GetAccount(Account requestBody)
@@ -67,7 +65,7 @@ namespace EmuTarkovNXT.Server
 			if (requestBody == null || !ValidEmail(requestBody.email) || !ValidPassword(requestBody.password))
 			{
 				// input invalid
-				return -2;
+				return ERROR_INVALID_INPUT;
 			}
 
 			for (int i = 0; i < accounts.Count; ++i)
@@ -79,7 +77,7 @@ namespace EmuTarkovNXT.Server
 			}
 
 			// account not found
-			return -1;
+			return ERROR_ACCOUNT_UNKNOWN;
 		}
 
 		public string CreateAccount(string body)
@@ -90,20 +88,15 @@ namespace EmuTarkovNXT.Server
 			}
 
 			Account requestBody = Json.Deserialize<Account>(body);
-			int accountId = GetAccount(requestBody);
+			int result = GetAccount(requestBody);
 
-			if (accountId == -1)
+			if (result == ERROR_ACCOUNT_UNKNOWN)
 			{
-				lock (threadLock)
-				{
-					// todo: generate EFT AID instead
-					string id = accounts.Count.ToString();
+				string id = IDGenerator.GenerateUniqueId();
+				Account account = new Account(requestBody.email, requestBody.password, id);
 
-					Account account = new Account(requestBody.email, requestBody.password, id);
-					accounts.Add(account);
-					SaveAccounts();
-				}
-
+				accounts.Add(account);
+				SaveAccounts();
 				return Json.Serialize(new Packet<string>(0, "", "success"));
 			}
 
@@ -117,19 +110,16 @@ namespace EmuTarkovNXT.Server
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
 
-			int accountId = GetAccount(Json.Deserialize<Account>(body));
+			int result = GetAccount(Json.Deserialize<Account>(body));
 
-			if (accountId < 0)
+			if (result <= ERROR_ACCOUNT_UNKNOWN)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
 
-			lock (threadLock)
-			{
-				accounts.Remove(accounts[accountId]);
-				SaveAccounts();
-				return Json.Serialize(new Packet<string>(0, "", "success"));
-			}
+			accounts.Remove(accounts[result]);
+			SaveAccounts();
+			return Json.Serialize(new Packet<string>(0, "", "success"));
 		}
 
 		public string LoginAccount(string body)
@@ -139,14 +129,14 @@ namespace EmuTarkovNXT.Server
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
 
-			int accountId = GetAccount(Json.Deserialize<Account>(body));
+			int result = GetAccount(Json.Deserialize<Account>(body));
 
-            if (accountId < 0)
+            if (result <= ERROR_ACCOUNT_UNKNOWN)
 			{
 				return Json.Serialize(new Packet<string>(0, "", "failed"));
 			}
 
-			request.SetSid(accounts[accountId].id);
+			request.SetSid(accounts[result].id);
 			return Json.Serialize(new Packet<string>(0, "", "success"));
 		}
 	}

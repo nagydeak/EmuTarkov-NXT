@@ -46,6 +46,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Controllers\IDGenerator.cs" />
     <Compile Include="Code\Models\EFT\Packet.cs" />
     <Compile Include="Code\Models\Server\Account.cs" />
     <Compile Include="Code\Libs\FileExt.cs" />
