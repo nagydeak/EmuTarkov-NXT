@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using EmuTarkovNXT.Shared;
-using EmuTarkovNXT.Models.Server;
+using EmuTarkovNXT.Shared.Models.Server;
 
 namespace Launcher.Code
 {

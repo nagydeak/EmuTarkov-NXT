@@ -8,12 +8,12 @@ namespace TestLauncher
 	{
 		public static void Main(string[] args)
 		{
-			LauncherConstants.SetFilepath(AppDomain.CurrentDomain.BaseDirectory);
-			LauncherConstants.SetBackndUrl("http://localhost:8888/");
+			Constants.SetFilepath(AppDomain.CurrentDomain.BaseDirectory);
+			Constants.SetBackendUrl("http://localhost:8888/");
 
-			Log.Create(LauncherConstants.filepath);
-			Log.Data(LauncherConstants.version);
-			Log.Info("Filepath: " + LauncherConstants.filepath);
+			Log.Create(Constants.filepath);
+			Log.Data(Constants.version);
+			Log.Info("Filepath: " + Constants.filepath);
 
 
 

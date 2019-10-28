@@ -1,11 +1,11 @@
 ﻿namespace EmuTarkovNXT.Server
 {
-	public static class ServerConstants
+	public static class Constants
 	{
 		public static string filepath { get; private set; }
 		public static string version { get; private set; }
 
-		static ServerConstants()
+		static Constants()
 		{
 			filepath = "";
 			version = "EmuTarkovNXT server | v0.0.1a";

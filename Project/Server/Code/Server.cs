@@ -92,7 +92,7 @@ namespace EmuTarkovNXT.Server
 
 		private string GetVersion(string body)
 		{
-			return ServerConstants.version;
+			return Constants.version;
 		}
 
 		private void SetupResponses()

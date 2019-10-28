@@ -44,13 +44,9 @@
     <Compile Include="Code\Controllers\ResponseFactory.cs" />
     <Compile Include="Code\Controllers\ResponseHandler.cs" />
     <Compile Include="Code\Server.cs" />
-    <Compile Include="Code\ServerConstants.cs" />
+    <Compile Include="Code\Constants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{be05a826-801e-4a7d-9a71-a8492e620fc4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{490832ce-4149-4ae3-9c5a-bf8edc6309e3}</Project>
       <Name>Shared</Name>

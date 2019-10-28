@@ -8,11 +8,11 @@ namespace TestServer
 	{
 		public static void Main(string[] args)
 		{
-			ServerConstants.SetFilepath(AppDomain.CurrentDomain.BaseDirectory);
+			Constants.SetFilepath(AppDomain.CurrentDomain.BaseDirectory);
 
-			Log.Create(ServerConstants.filepath);
-			Log.Data(ServerConstants.version);
-			Log.Info("Filepath: " + ServerConstants.filepath);
+			Log.Create(Constants.filepath);
+			Log.Data(Constants.version);
+			Log.Info("Filepath: " + Constants.filepath);
 
 			Server server = new Server("http://localhost:8888/");
 			server.Start();

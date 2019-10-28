@@ -42,10 +42,6 @@
     <Folder Include="Appdata\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{be05a826-801e-4a7d-9a71-a8492e620fc4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{490832ce-4149-4ae3-9c5a-bf8edc6309e3}</Project>
       <Name>Shared</Name>
@@ -53,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AccountRequest.cs" />
-    <Compile Include="Code\LauncherConstants.cs" />
+    <Compile Include="Code\Constants.cs" />
     <Compile Include="Code\RequestHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

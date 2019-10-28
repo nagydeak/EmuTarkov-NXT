@@ -1,6 +1,7 @@
 ﻿/* AccountHandler.cs
  * authors: Merijn Hendriks
  * license: MIT License
+ * remarks: not thread-safe
  */
 
 using System;
@@ -8,8 +9,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using EmuTarkovNXT.Shared;
-using EmuTarkovNXT.Models.EFT;
-using EmuTarkovNXT.Models.Server;
+using EmuTarkovNXT.Shared.Models.EFT;
+using EmuTarkovNXT.Shared.Models.Server;
 
 namespace EmuTarkovNXT.Server
 {
@@ -25,7 +26,7 @@ namespace EmuTarkovNXT.Server
 		public AccountHandler(RequestHandler requestInfo)
 		{
 			request = requestInfo;
-			filepath = FileExt.CombinePath(ServerConstants.filepath, "./Appdata/accounts.json");
+			filepath = FileExt.CombinePath(Constants.filepath, "./Appdata/accounts.json");
 			accounts = new List<Account>();
 			threadLock = new object();
 			LoadAccounts();
