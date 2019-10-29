@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace EmuTarkovNXT.Shared
 {
@@ -12,19 +13,9 @@ namespace EmuTarkovNXT.Shared
 		public static string GenerateUniqueId()
 		{
 			string uId = "";
-			Guid guid = Guid.NewGuid();
-			string uniqueString = Convert.ToBase64String(guid.ToByteArray()).TrimEnd('=');
-			
-			foreach (char c in uniqueString)
-			{
-				if (c == '/' || c == '=')
-				{
-					continue;
-				}
-
-				uId += c;
-			}
-
+			uId += Convert.ToBase64String(Guid.NewGuid().ToByteArray()).TrimEnd('=');
+			uId += Convert.ToBase64String(Guid.NewGuid().ToByteArray()).TrimEnd('=');
+			uId.Replace("/", "").Replace("=", "").Replace("+", "").Substring(0, 24).ToLower();
 			return uId;
 		}
 	}
