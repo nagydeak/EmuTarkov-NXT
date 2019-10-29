@@ -1,6 +1,7 @@
 ﻿/* ResponseFactory.cs
  * authors: Merijn Hendriks
  * license: MIT License
+ * remarks: not thread-safe
  */
 
 using System;

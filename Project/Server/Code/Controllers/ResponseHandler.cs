@@ -78,9 +78,7 @@ namespace EmuTarkovNXT.Server
 			Log.Data("SEND:" + Environment.NewLine + json);
 			response.AddHeader("Content-Type", "text/plain");
 			response.AddHeader("Content-Encoding", "deflate");
-
-			byte[] buffer = Encoding.UTF8.GetBytes(json);
-			return Zlib.Compress(buffer);
+			return Zlib.Compress(Encoding.UTF8.GetBytes(json));
 		}
 	}
 }

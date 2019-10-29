@@ -2,29 +2,23 @@
 using EmuTarkovNXT.Shared;
 using EmuTarkovNXT.Shared.Models.Server;
 
-namespace Launcher.Code
+namespace EmuTarkovNXT.Launcher
 {
-	public class AccountRequest
+	public static class AccountRequest
 	{
-		public string CreateAccount(string email, string password)
+		public static string CreateAccount(string email, string password)
 		{
-			Account account = new Account(email, password, "");
-
-			return "failure";
+			return RequestHandler.SendRequest("/launcher/account/create", Json.Serialize<Account>(new Account(email, password, "")));
 		}
 
-		public string DeleteAccount(string email, string password)
+		public static string DeleteAccount(string email, string password)
 		{
-			Account account = new Account(email, password, "");
-
-			return "failure";
+			return RequestHandler.SendRequest("/launcher/account/delete", Json.Serialize<Account>(new Account(email, password, "")));
 		}
 
-		public string LoginAccount(string email, string password)
+		public static string LoginAccount(string email, string password)
 		{
-			Account account = new Account(email, password, "");
-
-			return "failure";
+			return RequestHandler.SendRequest("/launcher/account/login", Json.Serialize<Account>(new Account(email, password, "")));
 		}
 	}
 }

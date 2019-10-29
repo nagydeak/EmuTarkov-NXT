@@ -38,9 +38,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Appdata\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{490832ce-4149-4ae3-9c5a-bf8edc6309e3}</Project>

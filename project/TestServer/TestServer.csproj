@@ -39,6 +39,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Models\Config.cs" />
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,7 +54,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Appdata\server.config.json" />
+    <None Include="Appdata\server.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

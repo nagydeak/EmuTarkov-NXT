@@ -1,5 +1,5 @@
 ﻿/* IDGenerator.cs
- * authors: Amir
+ * authors: Amir, Merijn Hendriks
  * license: MIT license
  */
 
