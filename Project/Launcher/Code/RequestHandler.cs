@@ -26,9 +26,11 @@ namespace EmuTarkovNXT.Launcher
 			}
 
 			// get response
+			Stream responseData = request.GetResponse().GetResponseStream();
+
 			using (MemoryStream ms = new MemoryStream())
 			{
-				request.GetResponse().GetResponseStream().CopyTo(ms);
+				responseData.CopyTo(ms);
 				return Encoding.UTF8.GetString(Zlib.Decompress(ms.ToArray()));
 			}
 		}

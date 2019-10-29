@@ -34,12 +34,14 @@ namespace EmuTarkovNXT.Server
 					break;
 			}
 
+			// set headers
 			response.AddHeader("Set-Cookie", "PHPSESSID=" + requestHandler.sid);
 			response.ContentLength64 = buffer.Length;
 
-			MemoryStream ms = new MemoryStream(buffer);
-			ms.CopyTo(response.OutputStream);
-			ms.Close();
+			// send response
+			Stream responseData = response.OutputStream;
+			responseData.Write(buffer, 0, buffer.Length);
+			responseData.Close();
 		}
 
 		private byte[] SendImage(HttpListenerResponse response, string url)
@@ -49,22 +51,26 @@ namespace EmuTarkovNXT.Server
 				return null;
 			}
 
-			string filepath = Path.Combine(Environment.CurrentDirectory, url);
+			// file
 			byte[] buffer = null;
-
-			// file size
+			string filepath = Path.Combine(Environment.CurrentDirectory, url);
 			FileInfo fileInfo = new FileInfo(filepath);
 			long bytesCount = fileInfo.Length;
 
-			// file data
-			FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-			BinaryReader br = new BinaryReader(fs);
-			buffer = br.ReadBytes((int)bytesCount);
-			br.Close();
-			fs.Close();
-			
+			using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+			{
+				using (BinaryReader br = new BinaryReader(fs))
+				{
+					buffer = br.ReadBytes((int)bytesCount);
+				}
+			}
+
+			// set headers
 			response.AddHeader("Content-Type", "image/png");
 			response.AddHeader("Content-Encoding", "identity");
+			response.StatusCode = 200;
+
+			Log.Data("SEND:" + Environment.NewLine + filepath);
 			return buffer;
 		}
 
@@ -75,10 +81,15 @@ namespace EmuTarkovNXT.Server
 				return null;
 			}
 
-			Log.Data("SEND:" + Environment.NewLine + json);
+			// json
+			byte[] buffer = Zlib.Compress(Encoding.UTF8.GetBytes(json));
+
+			// set headers
 			response.AddHeader("Content-Type", "text/plain");
 			response.AddHeader("Content-Encoding", "deflate");
-			return Zlib.Compress(Encoding.UTF8.GetBytes(json));
+
+			Log.Data("SEND:" + Environment.NewLine + json);
+			return buffer;
 		}
 	}
 }
